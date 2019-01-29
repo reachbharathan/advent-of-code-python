@@ -1,6 +1,6 @@
 import re
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 with open("/Users/Bharathan/projects/python_practise/advent_of_code/04_sample_input.txt", "r") as file:
     input1 = list(filter(None, file.read().splitlines()))
@@ -18,6 +18,7 @@ print(input1)
 
 class daywise_guard_details():
     guard_name = ""
+
     def __init__(self, str=""):
         date_str = re.findall(r'\[.+\]+', str)
         guard_str = re.findall(r'\]\s(.+)', str)
@@ -43,7 +44,7 @@ class daywise_guard_details():
 
     def set_guard_data(self, guard_str="None"):
         if "Guard #" in guard_str:
-                self.guard_name = re.findall(r'\d+', guard_str)[0]
+            self.guard_name = re.findall(r'\d+', guard_str)[0]
 
 
 previous_guard_name = ""
@@ -52,12 +53,19 @@ for x in input1:
     guard_data = daywise_guard_details(x)
     guard_data.print_guard_time()
     if guard_data.guard_name and not date_guard_dict.get(guard_data.date_object):
-        date_guard_dict[guard_data.date_object]= guard_data.guard_name
-    elif guard_data.guard_name and date_guard_dict.get(guard_data.date_object):
-        temp_date_object = guard_data.date_object + timedelta(days=1)
-        date_guard_dict[temp_date_object] = guard_data.guard_name
+        if guard_data.date_object.hour == 00:
+            date_guard_dict[guard_data.date_object] = guard_data.guard_name
+        elif guard_data.date_object.hour == 23:
+            temp_date_object = guard_data.date_object + timedelta(days=1)
+            temp_date_object = datetime.combine(temp_date_object, time())
+            date_guard_dict[temp_date_object] = guard_data.guard_name
 
 # for x in input1:
+guard_effort_fall_asleep = []
+guard_effort_wakes_up = []
+for x in input1:
+    guard_data = daywise_guard_details(x)
+    pass
 
-
-print(date_guard_dict)
+for x in date_guard_dict.items():
+    print(x)
