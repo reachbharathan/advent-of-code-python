@@ -69,28 +69,28 @@ for x in input1:
     if guard_data.guard_name and not date_guard_dict.get(guard_data.date_object):
         if guard_data.date_object.hour == 00:
             # temp_date_object = datetime.combine(temp_date_object, time())
-            date_guard_dict[guard_data.guard_name]= [guard_data.date_object.strftime("%Y-%m-%d")]
+            date_guard_dict[guard_data.date_object.strftime("%Y-%m-%d")] = guard_data.guard_name
         elif guard_data.date_object.hour == 23:
             temp_date_object = guard_data.date_object + timedelta(days=1)
             temp_date_object = datetime.combine(temp_date_object, time())
-            date_guard_dict[guard_data.guard_name] = [guard_data.guard_name]
+            date_guard_dict[temp_date_object.strftime("%Y-%m-%d")] = guard_data.guard_name
 
-
-for key, value in date_guard_dict.items():
-    guard_name_set.add(value)
-
-# for x in input1:
+# for key, value in date_guard_dict.items():
+#     guard_name_set.add(value)
 
 for x in date_guard_dict.items():
     print(x)
 
 
-for x in guard_name_set:
-    for y in input1:
-        guard_data = daywise_guard_details(y)
-        if "727" in x:
-            print("******")
-        if date_guard_dict[guard_data.date_object_str] == x:
+
+
+# for x in input1:
+
+
+for x in date_guard_dict:
+    for io_str in input1:
+        guard_data = daywise_guard_details(io_str)
+        if x == guard_data.date_object_str:
             if "falls asleep" in guard_data.guard_str:
                 guard_effort_fall_asleep.append(guard_data.date_object.minute)
             if "wakes up" in guard_data.guard_str:
@@ -99,4 +99,3 @@ for x in guard_name_set:
 
 for x,value in guard_asleep_dict.items():
     print(x,value)
-
